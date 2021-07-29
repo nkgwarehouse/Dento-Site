@@ -1,0 +1,181 @@
+class latest_news_Widget extends WP_Widget{
+    function __construct() {
+        parent::__construct(
+            'latest_news_widget', // Base ID
+            'Latest_news Widget', // Name
+            array('description' =>  __( 'Displays your latest News listings. Outputs the post thumbnail, title and date per listing'))
+           );
+    }
+    function update($new_instance, $old_instance) {
+        $instance = $old_instance;
+        $instance['title'] = strip_tags($new_instance['title']);
+        $instance['numberOfListings'] = strip_tags($new_instance['numberOfListings']);
+        return $instance;
+    }
+     
+     
+    } //end class latest_news_Widget
+    register_widget('latest_news_Widget');      
+    
+    
+
+    function forme($instance) {
+        if( $instance) {
+            $title = esc_attr($instance['title']);
+            $numberOfListings = esc_attr($instance['numberOfListings']);
+        } else {
+            $title = '';
+            $numberOfListings = '';
+        } 
+    }
+
+    function widgete($args, $instance) {
+        extract( $args );
+        $title = apply_filters('widget_title', $instance['title']);
+        $numberOfListings = $instance['numberOfListings'];
+        echo $before_widget;
+        if ( $title ) {
+            echo $before_title . $title . $after_title;
+        }
+        $this->getRealtyListings($numberOfListings);
+        echo $after_widget;
+    }    
+
+    function form($instance) {
+        if( $instance) {
+            $title = esc_attr($instance['title']);
+            $numberOfListings = esc_attr($instance['numberOfListings']);
+        } else {
+            $title = '';
+            $numberOfListings = '';
+        } 
+    }
+
+    function widget($args, $instance) {
+        extract( $args );
+        $title = apply_filters('widget_title', $instance['title']);
+        $numberOfListings = $instance['numberOfListings'];
+        echo $before_widget;
+        if ( $title ) {
+            echo $before_title . $title . $after_title;
+        }
+        $this->getRealtyListings($numberOfListings);
+        echo $after_widget;
+    }
+
+    
+    function getRealtyListings($numberOfListings) { //html
+        global $post;
+        add_image_size( 'realty_widget_size', 85, 45, false );
+        $listings = new WP_Query();
+        $listings-> query('post_type=listings&amp;posts_per_page=' . $numberOfListings );
+        if($listings->found_posts) {
+        }
+    }
+
+
+function getActivityListings($numberOfPosts){
+        global $post;
+        add_image_size ('realty_widget_size', 85, 45, false);
+        $listings= new WP_Query();
+        $listings-> query('post_type=new&post_per_page=' . $numberOfPosts);
+        if($listings -> found_posts >0){
+            echo '<ul class =" realty_widget">';
+            while ($listings->have_posts()){
+                $listings->the_post();
+                ?>
+                
+                <?php
+                $image = (has_post_thumbnail($post->ID)) ? get_the_post_thumbnail($post->ID, 'blog-thumbnail') : '<div class="blog-thumbnail"></div>';
+                $listItem = '<li>'. $image;
+                $listItem .= '<a href='."<?php the_permalink(); ?>".'' . '</a>';
+                
+                ?>
+                <?php
+                $listItem .= '<br><span>' . get_the_title() . '</span>';
+                $listItem .= '<br><span>' . get_the_date() . '</span></li>';
+                echo $listItem;
+               
+            }
+            echo '</ul>';
+            ?>  <?php 
+            wp_reset_postdata();
+        }else{
+            echo '<p style="padding:25px;">No Listing found</p>';
+
+
+
+
+
+
+commentss
+    <?php $id -> get_the_ID(); ?>
+        <?php $comment_args = array(
+            'comment_notes_after' => '',
+            'title_reply' => 'Have something to say?',
+            'post__in' => $id, //Retrieves comments for an array of posts
+            'post_id' => $post_ID // Post's ID you can make sure only comments related to that post appear.
+            )
+        ?>
+        <!-- The comment query -->
+        <?php      $comments_query = new WP_Comment_Query;
+            $comments = $comments_query->query( $args ); ?>
+
+
+
+
+
+
+
+            <ol>
+
+                     
+
+                        <li class="single_comment_area">
+                           <div class="comment-content d-flex">
+                              <div class="comment-author">
+                                 <img src="/wp-content/themes/dento/img/bg-img/26.jpg" alt="author">
+                              </div>
+                              <div class="comment-meta">
+                                 <a href="#" class="post-author"><?php the_author() ?> / <span><?php the_date() ?> at <?php the_time() ?></span></a>
+                                 <div><?php the_comment(); ?></div>
+
+                                 <a href="#" class="comment-reply">Reply</a>
+                              </div>
+                        </div>
+                     <!-- <ol class="children">
+                        <li class="single_comment_area">
+                           <div class="comment-content d-flex">
+                              <div class="comment-author">
+                                 <img src="../wp-content/themes/dento/img/bg-img/27.jpg" alt="author">
+                              </div>
+                              <div class="comment-meta">
+                                 <a href="#" class="post-author"><?php the_author() ?> / <span><?php the_date() ?> at <?php the_time() ?></span></a>
+                                 <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sitdown ameto, consectetur, adipisci velit, sed quiata non numqua eius modi tempor incidunt ut labore.</p>
+                                 <a href="#" class="comment-reply">Reply</a>
+                              </div>
+                           </div>
+                        </li>
+                     </ol>
+                  </li>
+                  <li class="single_comment_area">
+                     <div class="comment-content d-flex">
+                        <div class="comment-author">
+                           <img src="../wp-content/themes/dento/img/bg-img/28.jpg" alt="author">
+                        </div>
+                        <div class="comment-meta">
+                           <a href="#" class="post-author">Jonny Evans / <span>28 Sep 2018 at 11:00 am</span></a>
+                           <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sitdown ameto, consectetur, adipisci velit, sed quiata non numqua eius modi tempor incidunt ut labore.</p>
+                           <a href="#" class="comment-reply">Reply</a>
+                        </div>
+                     </div>
+                  </li> -->
+               </ol>
+            </div>
+
+
+
+                <!-- <?php if ( is_active_sidebar( 'sidebar-1' ) ) : ?>
+                          <?php dynamic_sidebar( 'sidebar-1' ); ?>
+                      <?php endif; 
+                      ?> -->
